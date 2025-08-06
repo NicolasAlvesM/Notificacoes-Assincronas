@@ -12,6 +12,6 @@ export class EventsGateway {
   server: Server;
 
   sendStatusUpdate(data: CreateEventDto) {
-    this.server.emit('message', data);
+    this.server.emit('statusUpdate', data);
   }
 }
