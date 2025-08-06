@@ -6,6 +6,9 @@ import { randomUUID } from 'crypto';
 
 const subscribeMock = jest.fn();
 
+process.env.FILA_ENTRADA = 'fila.notificacao.entrada.nicolas';
+process.env.FILA_STATUS = 'fila.notificacao.status.nicolas';
+
 const mockClientProxy = {
   emit: jest.fn(() => ({
     subscribe: subscribeMock,
@@ -46,7 +49,7 @@ describe('RabbitmqService', () => {
         conteudoMensagem: 'Esta é uma mensagem de teste.',
         status: 'PROCESSANDO',
       };
-      const expectedPattern = 'fila.notificacao.entrada.nicolas';
+      const expectedPattern = process.env.FILA_ENTRADA;
 
       const result = service.create(createRabbitmqDto);
 
@@ -66,7 +69,7 @@ describe('RabbitmqService', () => {
         status: 'PROCESSADO_SUCESSO',
       };
 
-      const expectedPattern = 'fila.notificacao.status.nicolas';
+      const expectedPattern = process.env.FILA_STATUS;
 
       const result = service.notification(createRabbitmqDto);
 
