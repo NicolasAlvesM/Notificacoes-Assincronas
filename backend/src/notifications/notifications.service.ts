@@ -18,9 +18,12 @@ export class NotificationsService {
     };
 
     this.rabbitmqService.create(messageData);
-    this.statusService.setStatus(createNotificationDto.id, 'PROCESSANDO');
+    this.statusService.setStatus(
+      createNotificationDto.mensagemId,
+      'PROCESSANDO',
+    );
 
-    return createNotificationDto.id;
+    return createNotificationDto.mensagemId;
   }
 
   async processNotification(data: CreateRabbitmqDto) {
@@ -36,7 +39,7 @@ export class NotificationsService {
       status: statusFinal,
     };
 
-    this.statusService.setStatus(data.id, statusFinal);
+    this.statusService.setStatus(data.mensagemId, statusFinal);
 
     this.rabbitmqService.notification(statusPayload);
 

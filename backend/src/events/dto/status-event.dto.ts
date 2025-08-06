@@ -1,4 +1,4 @@
 export class CreateEventDto {
-  id: string;
+  mensagemId: string;
   status: string;
 }
