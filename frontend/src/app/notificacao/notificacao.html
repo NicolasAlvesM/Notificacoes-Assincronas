@@ -1,19 +1,21 @@
-<div>
-  <input 
-    type="text" 
-    [(ngModel)]="conteudoMensagem" 
-    placeholder="Conteúdo da mensagem"
-  />
-  <button (click)="enviarNotificacao()">Enviar Notificação</button>
+<div class="container">
+  <div class="input-section">
+    <input 
+      type="text" 
+      [(ngModel)]="conteudoMensagem" 
+      placeholder="Digite a mensagem"
+      class="input-field">
+    
+    <button (click)="enviarNotificacao()" class="send-button">
+      Enviar Notificação
+    </button>
+  </div>
+
+  <div class="notifications-list">
+    <div *ngFor="let notificacao of notificacoes" class="notification-item">
+      <div class="notification-id">ID: {{ notificacao.mensagemId }}</div>
+      <div class="notification-content">Mensagem: {{ notificacao.conteudoMensagem }}</div>
+      <div class="notification-status">Status: {{ notificacao.status }}</div>
+    </div>
+  </div>
 </div>
-
-<hr />
-
-<h2>Status das Notificações</h2>
-<ul>
-  <li *ngFor="let n of notificacoes">
-    <strong>ID:</strong> {{ n.mensagemId }} | <strong>ID:</strong> {{ n.conteudoMensagem }} | <strong>Status:</strong> {{ n.status }}
-  </li>
-</ul>
-
-<p *ngIf="notificacoes.length === 0">Nenhuma notificação enviada ainda.</p>
