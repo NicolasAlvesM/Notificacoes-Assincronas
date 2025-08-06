@@ -10,9 +10,7 @@ export class RabbitmqService {
 
   create(createRabbitmqDto: CreateRabbitmqDto) {
     try {
-      this.client
-        .emit('fila.notificacao.entrada.nicolas', createRabbitmqDto)
-        .subscribe();
+      this.client.emit(process.env.FILA_ENTRADA, createRabbitmqDto).subscribe();
 
       return 'Mensagem publicada com sucesso';
     } catch (error) {
@@ -23,9 +21,7 @@ export class RabbitmqService {
 
   notification(createRabbitmqDto: CreateRabbitmqDto) {
     try {
-      this.client
-        .emit('fila.notificacao.status.nicolas', createRabbitmqDto)
-        .subscribe();
+      this.client.emit(process.env.FILA_STATUS, createRabbitmqDto).subscribe();
 
       return 'Mensagem publicada com sucesso';
     } catch (error) {
