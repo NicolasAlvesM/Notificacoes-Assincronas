@@ -16,6 +16,9 @@
   docker-compose up --build
   ```
 3. **Acesse a aplicação**
+   
 Frontend: http://localhost:8080
+
 Backend: http://localhost:3000
+
 Websocket: http://localhost:3001
