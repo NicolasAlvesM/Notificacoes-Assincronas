@@ -1,0 +1,19 @@
+<div>
+  <input 
+    type="text" 
+    [(ngModel)]="conteudoMensagem" 
+    placeholder="Conteúdo da mensagem"
+  />
+  <button (click)="enviarNotificacao()">Enviar Notificação</button>
+</div>
+
+<hr />
+
+<h2>Status das Notificações</h2>
+<ul>
+  <li *ngFor="let n of notificacoes">
+    <strong>ID:</strong> {{ n.mensagemId }} | <strong>ID:</strong> {{ n.conteudoMensagem }} | <strong>Status:</strong> {{ n.status }}
+  </li>
+</ul>
+
+<p *ngIf="notificacoes.length === 0">Nenhuma notificação enviada ainda.</p>
