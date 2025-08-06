@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateNotificationDto } from './dto/create-notification.dto';
-import { randomUUID } from 'crypto';
 import { StatusService } from 'src/status/status.service';
 import { RabbitmqService } from 'src/rabbitmq/rabbitmq.service';
 import { CreateRabbitmqDto } from 'src/rabbitmq/dto/create-rabbitmq.dto';
@@ -13,17 +12,15 @@ export class NotificationsService {
   ) {}
 
   create(createNotificationDto: CreateNotificationDto) {
-    const id = randomUUID();
     const messageData = {
-      id,
-      conteudoMensagem: createNotificationDto.conteudoMensagem,
+      ...createNotificationDto,
       status: 'PROCESSANDO',
     };
 
     this.rabbitmqService.create(messageData);
-    this.statusService.setStatus(id, 'PROCESSANDO');
+    this.statusService.setStatus(createNotificationDto.id, 'PROCESSANDO');
 
-    return id;
+    return createNotificationDto.id;
   }
 
   async processNotification(data: CreateRabbitmqDto) {
