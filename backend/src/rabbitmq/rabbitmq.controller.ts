@@ -14,7 +14,7 @@ export class RabbitMQController {
     private readonly notificationService: NotificationsService,
     private readonly eventsGateway: EventsGateway,
   ) {}
-  @MessagePattern('fila.notificacao.entrada.nicolas')
+  @MessagePattern(process.env.FILA_ENTRADA)
   async processQueue(@Payload() data, @Ctx() context: RmqContext) {
     try {
       const channel = context.getChannelRef();
@@ -28,7 +28,7 @@ export class RabbitMQController {
     }
   }
 
-  @MessagePattern('fila.notificacao.status.nicolas')
+  @MessagePattern(process.env.FILA_STATUS)
   async notificationQueue(@Payload() data, @Ctx() context: RmqContext) {
     try {
       const channel = context.getChannelRef();

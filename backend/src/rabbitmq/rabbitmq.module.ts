@@ -14,7 +14,7 @@ import { EventsModule } from 'src/events/events.module';
         name: 'NOTIFICATION_SERVICE',
         transport: Transport.RMQ,
         options: {
-          urls: ['amqp://nicolas:nicolas123@rabbitmq:5672'],
+          urls: [process.env.RABBITMQ_URL],
           queue: 'notification_queue',
           queueOptions: {
             durable: false,
