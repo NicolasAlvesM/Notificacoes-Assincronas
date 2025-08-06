@@ -39,16 +39,36 @@ describe('RabbitmqService', () => {
     expect(service).toBeDefined();
   });
 
-  describe('create', () => {
+  describe('create e notification', () => {
     it('deve chamar client.emit com o padrão e payload corretos e retornar sucesso', () => {
       const createRabbitmqDto: CreateRabbitmqDto = {
         mensagemId: randomUUID(),
         conteudoMensagem: 'Esta é uma mensagem de teste.',
-        status: 'PENDING',
+        status: 'PROCESSANDO',
       };
       const expectedPattern = 'fila.notificacao.entrada.nicolas';
 
       const result = service.create(createRabbitmqDto);
+
+      expect(result).toBe('Mensagem publicada com sucesso');
+      expect(client.emit).toHaveBeenCalledTimes(1);
+      expect(client.emit).toHaveBeenCalledWith(
+        expectedPattern,
+        createRabbitmqDto,
+      );
+      expect(subscribeMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('deve chamar client.emit com o padrão e payload corretos para notificação', () => {
+      const createRabbitmqDto: CreateRabbitmqDto = {
+        mensagemId: randomUUID(),
+        conteudoMensagem: 'Esta é uma mensagem de teste.',
+        status: 'PROCESSADO_SUCESSO',
+      };
+
+      const expectedPattern = 'fila.notificacao.status.nicolas';
+
+      const result = service.notification(createRabbitmqDto);
 
       expect(result).toBe('Mensagem publicada com sucesso');
       expect(client.emit).toHaveBeenCalledTimes(1);
@@ -71,10 +91,34 @@ describe('RabbitmqService', () => {
       const dto: CreateRabbitmqDto = {
         mensagemId: randomUUID(),
         conteudoMensagem: 'Mensagem que vai falhar.',
-        status: 'PENDING',
+        status: 'PROCESSANDO',
       };
 
       expect(() => service.create(dto)).toThrow(errorMessage);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        'Erro ao publicar mensagem:',
+        expect.any(Error),
+      );
+
+      consoleErrorSpy.mockRestore();
+    });
+
+    it('deve lançar um erro se a publicação de notificação falhar', () => {
+      const errorMessage = 'Notification publication FALHA_PROCESSAMENTO';
+      mockClientProxy.emit.mockImplementation(() => {
+        throw new Error(errorMessage);
+      });
+      const consoleErrorSpy = jest
+        .spyOn(console, 'error')
+        .mockImplementation(() => {});
+
+      const dto: CreateRabbitmqDto = {
+        mensagemId: randomUUID(),
+        conteudoMensagem: 'A messagem vai falhar.',
+        status: 'FALHA_PROCESSAMENTO',
+      };
+
+      expect(() => service.notification(dto)).toThrow(errorMessage);
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Erro ao publicar mensagem:',
         expect.any(Error),
