@@ -54,7 +54,7 @@ export class NotificacaoComponent implements OnInit {
 
     this.http.post('http://localhost:3000/api/notificar', payload).subscribe({
       next: (response) => {
-        console.log('Backend aceitou a notificação.', response);
+        this.socket.emit('subscribeToStatus', mensagemId);
       },
       error: (err) => {
         console.error('Erro ao enviar notificação:', err);
