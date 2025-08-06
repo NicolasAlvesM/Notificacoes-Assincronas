@@ -23,7 +23,7 @@ export class NotificationsService {
       'PROCESSANDO',
     );
 
-    return createNotificationDto.mensagemId;
+    return { mensagemId: createNotificationDto.mensagemId };
   }
 
   async processNotification(data: CreateRabbitmqDto) {

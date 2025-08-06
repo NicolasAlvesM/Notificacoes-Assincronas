@@ -34,7 +34,7 @@ export class RabbitMQController {
       const channel = context.getChannelRef();
       const originalMsg = context.getMessage();
       this.eventsGateway.sendStatusUpdate({
-        mensagemId: data.id,
+        mensagemId: data.mensagemId,
         status: data.status,
       });
       channel.ack(originalMsg);

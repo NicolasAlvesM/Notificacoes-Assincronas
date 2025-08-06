@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 
 export class CreateNotificationDto {
   @IsUUID()
-  @IsNotEmpty({ message: 'O id não pode ser vazio.' })
+  @IsNotEmpty({ message: 'A mensagemId não pode ser vazia.' })
   mensagemId: string;
 
   @IsString()
